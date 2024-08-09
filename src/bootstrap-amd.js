@@ -44,7 +44,7 @@ const isESM = false;
 // 		// Node.js default resolve if this is the last user-specified loader.
 // 		return nextResolve(specifier, context);
 // 	}`;
-// 	register(`data:text/javascript;base64,${Buffer.from(jsCode).toString('base64')}`, import.meta.url);
+// 	// register(`data:text/javascript;base64,${Buffer.from(jsCode).toString('base64')}`, import.meta.url);
 // }
 // ESM-uncomment-end
 

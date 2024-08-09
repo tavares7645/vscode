@@ -274,7 +274,7 @@ function packageTask(platform, arch, sourceFolderName, destinationFolderName, op
 		const jsFilter = util.filter(data => !data.isDirectory() && /\.js$/.test(data.path));
 		const root = path.resolve(path.join(__dirname, '..'));
 		const productionDependencies = getProductionDependencies(root);
-		const dependenciesSrc = productionDependencies.map(d => path.relative(root, d.path)).map(d => [`${d}/**`, `!${d}/**/{test,tests}/**`, `!**/*.mk`]).flat();
+		const dependenciesSrc = productionDependencies.map(d => path.relative(root, d.path)).map(d => [`${d}/**`, `!${d}/**/{test,tests}/**`]).flat();
 
 		const deps = gulp.src(dependenciesSrc, { base: '.', dot: true })
 			.pipe(filter(['**', `!**/${config.version}/**`, '!**/bin/darwin-arm64-87/**', '!**/package-lock.json', '!**/yarn.lock', '!**/*.js.map']))
@@ -282,20 +282,19 @@ function packageTask(platform, arch, sourceFolderName, destinationFolderName, op
 			.pipe(util.cleanNodeModules(path.join(__dirname, `.moduleignore.${process.platform}`)))
 			.pipe(jsFilter)
 			.pipe(util.rewriteSourceMappingURL(sourceMappingURLBase))
-			.pipe(jsFilter.restore);
-		// TODO@esm: ASAR disabled in ESM
-		// .pipe(createAsar(path.join(process.cwd(), 'node_modules'), [
-		// 	'**/*.node',
-		// 	'**/@vscode/ripgrep/bin/*',
-		// 	'**/node-pty/build/Release/*',
-		// '**/node-pty/build/Release/conpty/*',
-		// 	'**/node-pty/lib/worker/conoutSocketWorker.js',
-		// 	'**/node-pty/lib/shared/conout.js',
-		// 	'**/*.wasm',
-		// 	'**/@vscode/vsce-sign/bin/*',
-		// ], [
-		// 	'**/*.mk',
-		// ], 'node_modules.asar'));
+			.pipe(jsFilter.restore)
+			.pipe(createAsar(path.join(process.cwd(), 'node_modules'), [
+				'**/*.node',
+				'**/@vscode/ripgrep/bin/*',
+				'**/node-pty/build/Release/*',
+				'**/node-pty/build/Release/conpty/*',
+				'**/node-pty/lib/worker/conoutSocketWorker.js',
+				'**/node-pty/lib/shared/conout.js',
+				'**/*.wasm',
+				'**/@vscode/vsce-sign/bin/*',
+			], [
+				'**/*.mk',
+			], 'node_modules.asar'));
 
 		let all = es.merge(
 			packageJsonStream,

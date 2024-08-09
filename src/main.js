@@ -51,14 +51,8 @@ const portable = bootstrapNode.configurePortable(product);
 // Enable ASAR support
 bootstrapNode.enableASARSupport();
 
-// ESM-comment-begin
-const minimist = require('minimist'); // !!! IMPORTANT: MUST come after bootstrap#enableASARSupport
-// ESM-comment-end
-// ESM-uncomment-begin
-// import minimist from 'minimist'; // !!! IMPORTANT: MUST come after bootstrap#enableASARSupport
-// ESM-uncomment-end
-
-const args = parseCLIArgs();
+// Parse command line arguments (!!! must be called after `enableASARSupport()`)
+const args = await parseCLIArgs();
 // Configure static command line arguments
 const argvConfig = configureCommandlineSwitchesSync(args);
 // Enable sandbox globally unless
@@ -517,10 +511,11 @@ function getJSFlags(cliArgs) {
 }
 
 /**
- * @returns {NativeParsedArgs}
+ * @returns {Promise<NativeParsedArgs>}
  */
-function parseCLIArgs() {
-	return minimist(process.argv, {
+async function parseCLIArgs() {
+	const minimist = await import('minimist');
+	return minimist.default(process.argv, {
 		string: [
 			'user-data-dir',
 			'locale',
@@ -714,5 +709,7 @@ function getUserDefinedLocale(argvConfig) {
 
 	return typeof argvConfig?.locale === 'string' ? argvConfig.locale.toLowerCase() : undefined;
 }
+
+export {};
 
 //#endregion

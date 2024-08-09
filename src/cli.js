@@ -37,7 +37,6 @@ async function start() {
 	process.env['VSCODE_NLS_CONFIG'] = JSON.stringify(nlsConfiguration); // required for `bootstrap-amd` to pick up NLS messages
 
 	// Enable portable support
-	// @ts-ignore
 	bootstrapNode.configurePortable(product);
 
 	// Enable ASAR support
