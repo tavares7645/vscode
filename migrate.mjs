@@ -49,7 +49,7 @@ function migrate() {
 	writeFileSync(join(dstFolder, '.gitignore'), `*`);
 
 	console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`);
-	console.log(`COMPLETED AMD->ESM MIGRATION of src to src2. You can now launch yarn watch-esm or yarn watch-client-esm`);
+	console.log(`COMPLETED AMD->ESM MIGRATION of src to src2. You can now launch npm run watch-esm or npm run watch-client-esm`);
 	console.log(`Make sure to set the environment variable VSCODE_BUILD_ESM to a string of value 'true' if you want to build VS Code`);
 
 	if (watchSrc) {
